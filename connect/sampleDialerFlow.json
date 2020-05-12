@@ -1,0 +1,511 @@
+{
+    "modules": [
+        {
+            "id": "6780b09b-40a5-4de2-a8a6-87010c60cce7",
+            "type": "SetAttributes",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "87e86e15-895a-45fd-992e-ba11aeb4d92b"
+                },
+                {
+                    "condition": "Error",
+                    "transition": "87e86e15-895a-45fd-992e-ba11aeb4d92b"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Attribute",
+                    "value": "Customer Number",
+                    "key": "IncomingNumber",
+                    "namespace": "System"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 180,
+                    "y": 20
+                }
+            }
+        },
+        {
+            "id": "ee0661db-48c2-41ac-a026-43531ccf33d3",
+            "type": "PlayPrompt",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "0b0c4389-a316-4e08-908f-28abc2eb3f34"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Text",
+                    "value": "We are having problems with your number, please call us on xxxxxxxx",
+                    "namespace": null
+                },
+                {
+                    "name": "TextToSpeechType",
+                    "value": "text"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 1200,
+                    "y": 640
+                },
+                "useDynamic": false
+            }
+        },
+        {
+            "id": "dde53ebc-33ac-46fb-b2b7-55154d73a063",
+            "type": "SetCallBackNumber",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "1e30faf5-15ba-46cb-9118-be5701fd3e72"
+                },
+                {
+                    "condition": "InvalidPhoneNumber",
+                    "transition": "ee0661db-48c2-41ac-a026-43531ccf33d3"
+                },
+                {
+                    "condition": "NonDialableNumber",
+                    "transition": "ee0661db-48c2-41ac-a026-43531ccf33d3"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "CallBackNumber",
+                    "value": "Customer Number",
+                    "namespace": "System"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 900,
+                    "y": 380
+                }
+            }
+        },
+        {
+            "id": "87e86e15-895a-45fd-992e-ba11aeb4d92b",
+            "type": "SetRecordingBehavior",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "ee98a031-fb27-475f-a441-48f8fc40d8af"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "RecordingBehaviorOption",
+                    "value": "Enable"
+                },
+                {
+                    "name": "RecordingParticipantOption",
+                    "value": "Both"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 400,
+                    "y": 40
+                }
+            }
+        },
+        {
+            "id": "92024871-f9cc-4430-afef-89bfd4e812d2",
+            "type": "PlayPrompt",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "dde53ebc-33ac-46fb-b2b7-55154d73a063"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Text",
+                    "value": "OK, one of our agents will give you a call back shortly.",
+                    "namespace": null
+                },
+                {
+                    "name": "TextToSpeechType",
+                    "value": "text"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 640,
+                    "y": 460
+                },
+                "useDynamic": false
+            }
+        },
+        {
+            "id": "ee98a031-fb27-475f-a441-48f8fc40d8af",
+            "type": "SetVoice",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "8461eafe-02b7-494b-af5a-ef0e53157020"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "GlobalVoice",
+                    "value": "Emma"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 620,
+                    "y": 40
+                }
+            }
+        },
+        {
+            "id": "8461eafe-02b7-494b-af5a-ef0e53157020",
+            "type": "SetEventHook",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "8bdfac2c-70d5-4c9a-aa6f-c2f1f9a643f9"
+                },
+                {
+                    "condition": "Error",
+                    "transition": "8bdfac2c-70d5-4c9a-aa6f-c2f1f9a643f9"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Type",
+                    "value": "AgentWhisper"
+                },
+                {
+                    "name": "ContactFlowId",
+                    "value": "arn:aws:connect:",
+                    "resourceName": "Default agent whisper"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 60,
+                    "y": 240
+                },
+                "contactFlow": {
+                    "id": "arn:aws:connect:",
+                    "text": "Default agent whisper"
+                },
+                "customerOrAgent": false,
+                "useDynamic": false
+            }
+        },
+        {
+            "id": "4360618e-4964-4bd9-8e7e-69df71f2a49f",
+            "type": "PlayPrompt",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "0b0c4389-a316-4e08-908f-28abc2eb3f34"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Text",
+                    "value": "Thanks, we will check in on you tomorrow.",
+                    "namespace": null
+                },
+                {
+                    "name": "TextToSpeechType",
+                    "value": "text"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 1220,
+                    "y": 20
+                },
+                "useDynamic": false
+            }
+        },
+        {
+            "id": "17d4eb59-f53a-4487-8815-94a40ee6e5e7",
+            "type": "PlayPrompt",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "0b0c4389-a316-4e08-908f-28abc2eb3f34"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Text",
+                    "value": "Lambda Error 1. Please call us on xxxxx",
+                    "namespace": null
+                },
+                {
+                    "name": "TextToSpeechType",
+                    "value": "text"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 1220,
+                    "y": 180
+                },
+                "useDynamic": false
+            }
+        },
+        {
+            "id": "8bdfac2c-70d5-4c9a-aa6f-c2f1f9a643f9",
+            "type": "GetUserInput",
+            "branches": [
+                {
+                    "condition": "Evaluate",
+                    "conditionType": "Equals",
+                    "conditionValue": "1",
+                    "transition": "3ebfb754-1892-409c-96b8-fe7a46af8bfe"
+                },
+                {
+                    "condition": "Evaluate",
+                    "conditionType": "Equals",
+                    "conditionValue": "2",
+                    "transition": "92024871-f9cc-4430-afef-89bfd4e812d2"
+                },
+                {
+                    "condition": "Timeout",
+                    "transition": "92024871-f9cc-4430-afef-89bfd4e812d2"
+                },
+                {
+                    "condition": "NoMatch",
+                    "transition": "92024871-f9cc-4430-afef-89bfd4e812d2"
+                },
+                {
+                    "condition": "Error",
+                    "transition": "92024871-f9cc-4430-afef-89bfd4e812d2"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Text",
+                    "value": "How are you feeling today?  Press 1 for Happy, press 2 if you would like to talk.",
+                    "namespace": null
+                },
+                {
+                    "name": "TextToSpeechType",
+                    "value": "text"
+                },
+                {
+                    "name": "Timeout",
+                    "value": "5"
+                },
+                {
+                    "name": "MaxDigits",
+                    "value": "1"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 360,
+                    "y": 340
+                },
+                "conditionMetadata": [
+                    {
+                        "id": "183e7507-7827-45e9-aeea-f0eebc46e57c",
+                        "value": "1"
+                    },
+                    {
+                        "id": "e2400c65-5c4d-4e37-8c65-342437835419",
+                        "value": "2"
+                    }
+                ],
+                "useDynamic": false
+            },
+            "target": "Digits"
+        },
+        {
+            "id": "3ebfb754-1892-409c-96b8-fe7a46af8bfe",
+            "type": "InvokeExternalResource",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "4360618e-4964-4bd9-8e7e-69df71f2a49f"
+                },
+                {
+                    "condition": "Error",
+                    "transition": "17d4eb59-f53a-4487-8815-94a40ee6e5e7"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "FunctionArn",
+                    "value": "arn:aws:lambda:",
+                    "namespace": null
+                },
+                {
+                    "name": "TimeLimit",
+                    "value": "3"
+                },
+                {
+                    "name": "Parameter",
+                    "key": "Choice",
+                    "value": "1",
+                    "namespace": null
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 900,
+                    "y": 180
+                },
+                "dynamicMetadata": {
+                    "Choice": false
+                },
+                "useDynamic": false
+            },
+            "target": "Lambda"
+        },
+        {
+            "id": "0b0c4389-a316-4e08-908f-28abc2eb3f34",
+            "type": "Disconnect",
+            "branches": [],
+            "parameters": [],
+            "metadata": {
+                "position": {
+                    "x": 2040,
+                    "y": 280
+                }
+            }
+        },
+        {
+            "id": "d8c71f0b-56b0-41d5-ab60-835e934fb1c4",
+            "type": "PlayPrompt",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "0b0c4389-a316-4e08-908f-28abc2eb3f34"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Text",
+                    "value": "Lambda Error 2. Please call us on xxxxx",
+                    "namespace": null
+                },
+                {
+                    "name": "TextToSpeechType",
+                    "value": "text"
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 1720,
+                    "y": 600
+                },
+                "useDynamic": false
+            }
+        },
+        {
+            "id": "1e30faf5-15ba-46cb-9118-be5701fd3e72",
+            "type": "CreateCallback",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "3338b8a1-a16c-47c8-afa6-4d3dbe4d63f5"
+                },
+                {
+                    "condition": "Error",
+                    "transition": "0b0c4389-a316-4e08-908f-28abc2eb3f34"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Queue",
+                    "value": "arn:aws:connect:",
+                    "namespace": null,
+                    "resourceName": "BasicQueue"
+                },
+                {
+                    "name": "InitialDelaySeconds",
+                    "value": 99
+                },
+                {
+                    "name": "RetryDelaySeconds",
+                    "value": 600
+                },
+                {
+                    "name": "MaxRetryAttempts",
+                    "value": 2
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 1200,
+                    "y": 420
+                },
+                "useDynamic": false,
+                "queue": {
+                    "id": "arn:aws:connect:",
+                    "text": "BasicQueue"
+                }
+            }
+        },
+        {
+            "id": "3338b8a1-a16c-47c8-afa6-4d3dbe4d63f5",
+            "type": "InvokeExternalResource",
+            "branches": [
+                {
+                    "condition": "Success",
+                    "transition": "0b0c4389-a316-4e08-908f-28abc2eb3f34"
+                },
+                {
+                    "condition": "Error",
+                    "transition": "d8c71f0b-56b0-41d5-ab60-835e934fb1c4"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "FunctionArn",
+                    "value": "arn:aws:lambda:",
+                    "namespace": null
+                },
+                {
+                    "name": "TimeLimit",
+                    "value": "3"
+                },
+                {
+                    "name": "Parameter",
+                    "key": "Choice",
+                    "value": "2",
+                    "namespace": null
+                }
+            ],
+            "metadata": {
+                "position": {
+                    "x": 1420,
+                    "y": 460
+                },
+                "dynamicMetadata": {
+                    "Choice": false
+                },
+                "useDynamic": false
+            },
+            "target": "Lambda"
+        }
+    ],
+    "version": "1",
+    "type": "contactFlow",
+    "start": "6780b09b-40a5-4de2-a8a6-87010c60cce7",
+    "metadata": {
+        "entryPointPosition": {
+            "x": 20,
+            "y": 20
+        },
+        "snapToGrid": true,
+        "name": "SampleDialerFlow",
+        "description": null,
+        "type": "contactFlow",
+        "status": "published",
+        "hash": "ba3bba600aba94c4ad27e66b19381a8a59f86c7a403d04dab0a259881796a2e1"
+    }
+}

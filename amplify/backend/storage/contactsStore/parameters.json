@@ -1,0 +1,5 @@
+{
+    "tableName": "contactsStore",
+    "partitionKeyName": "telephoneNumber",
+    "partitionKeyType": "S"
+}

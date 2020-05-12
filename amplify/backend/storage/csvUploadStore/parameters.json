@@ -1,0 +1,32 @@
+{
+    "bucketName": "lc-csvuploadstore",
+    "authPolicyName": "s3_amplify_dea7078d",
+    "unauthPolicyName": "s3_amplify_dea7078d",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "selectedGuestPermissions": [
+        "s3:GetObject",
+        "s3:ListBucket"
+    ],
+    "selectedAuthenticatedPermissions": [
+        "s3:PutObject"
+    ],
+    "s3PermissionsAuthenticatedPublic": "DISALLOW",
+    "s3PublicPolicy": "Public_policy_5be33808",
+    "s3PermissionsAuthenticatedUploads": "DISALLOW",
+    "s3UploadsPolicy": "Uploads_policy_5be33808",
+    "s3PermissionsAuthenticatedProtected": "DISALLOW",
+    "s3ProtectedPolicy": "Protected_policy_5be33808",
+    "s3PermissionsAuthenticatedPrivate": "DISALLOW",
+    "s3PrivatePolicy": "Private_policy_5be33808",
+    "AuthenticatedAllowList": "DISALLOW",
+    "s3ReadPolicy": "read_policy_5be33808",
+    "s3PermissionsGuestPublic": "DISALLOW",
+    "s3PermissionsGuestUploads": "DISALLOW",
+    "GuestAllowList": "DISALLOW",
+    "triggerFunction": "NONE"
+}

@@ -1,0 +1,62 @@
+{
+    "paths": [
+        {
+            "name": "/telephonenumber",
+            "lambdaFunction": "apiRESTtelephonenumber",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/GET"
+                ],
+                "userPoolGroups": {
+                    "Uploaders": [
+                        "/POST",
+                        "/GET",
+                        "/PUT",
+                        "/PATCH",
+                        "/DELETE"
+                    ]
+                }
+            }
+        }
+    ],
+    "resourceName": "api604c21a1",
+    "apiName": "api604c21a1",
+    "functionArns": [
+        {
+            "lambdaFunction": "apiRESTtelephonenumber"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-lonely-connect-dev-153611-authRole",
+        "unAuthRoleName": "amplify-lonely-connect-dev-153611-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "apiRESTtelephonenumber",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "auth",
+            "resourceName": "lonelyconnect0f468434",
+            "attributes": [
+                "UserPoolId"
+            ]
+        },
+        {
+            "category": "auth",
+            "resourceName": "userPoolGroups",
+            "attributes": [
+                "UploadersGroupRole"
+            ]
+        }
+    ],
+    "uuid": "2325b1db",
+    "authResourceName": "lonelyconnect0f468434"
+}

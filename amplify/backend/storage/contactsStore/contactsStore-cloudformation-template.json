@@ -1,0 +1,153 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "DynamoDB resource stack creation using Amplify CLI",
+    "Parameters": {
+        "partitionKeyName": {
+            "Type": "String"
+        },
+        "partitionKeyType": {
+            "Type": "String"
+        },
+        "env": {
+            "Type": "String"
+        },
+        
+        "tableName": {
+            "Type": "String"
+        }
+    },
+    "Conditions": {
+        "ShouldNotCreateEnvResources": {
+            "Fn::Equals": [
+                {
+                    "Ref": "env"
+                },
+                "NONE"
+            ]
+        }
+    },
+    "Resources": {
+        "DynamoDBTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "BillingMode": "PAY_PER_REQUEST",
+                "AttributeDefinitions": [
+                  
+                  {
+                      "AttributeName": "telephoneNumber",
+                      "AttributeType": "S"
+                  }  , 
+                  
+                  {
+                      "AttributeName": "enabled",
+                      "AttributeType": "S"
+                  }  , 
+                  
+                  {
+                      "AttributeName": "lastSuccess",
+                      "AttributeType": "N"
+                  } 
+                  
+                ],
+                "KeySchema": [
+                  
+                  {
+                    "AttributeName": "telephoneNumber",
+                    "KeyType": "HASH"
+                  } 
+                  
+                ],
+                "StreamSpecification": {
+                    "StreamViewType": "NEW_IMAGE"
+                },
+                "TableName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        {
+                           "Ref": "tableName"
+                        }, 
+                        {
+
+                            "Fn::Join": [
+                                "",
+                                [
+                                  {
+                                    "Ref": "tableName"
+                                  },
+                                  "-",
+                                  {
+                                    "Ref": "env"
+                                  }
+                                ]
+                            ]
+                        }
+                    ]
+                }
+                
+                ,"GlobalSecondaryIndexes": [
+                  
+                    {
+                        "IndexName": "Enabled-lastSuccess",
+                        "KeySchema": [
+                            
+                            {
+                                "AttributeName": "enabled",
+                                "KeyType": "HASH"
+                            }  , 
+                            
+                            {
+                                "AttributeName": "lastSuccess",
+                                "KeyType": "RANGE"
+                            } 
+                            
+                        ],
+                        "Projection": {
+                            "ProjectionType": "ALL"
+                        }
+                    } 
+                  
+                ]
+                
+            }
+        }
+    },
+    "Outputs": {
+        "Name": {
+            "Value": {
+                "Ref": "DynamoDBTable"
+            }
+        },
+        "Arn": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "DynamoDBTable",
+                    "Arn"
+                ]
+            }
+        },
+        "StreamArn": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "DynamoDBTable",
+                    "StreamArn"
+                ]
+            }
+        },
+        "PartitionKeyName": {
+            "Value": {
+                "Ref": "partitionKeyName"
+            }
+        },
+        "PartitionKeyType": {
+            "Value": {
+                "Ref": "partitionKeyType"
+            }
+        },
+        
+        "Region": {
+            "Value": {
+                "Ref": "AWS::Region"
+            }
+        }
+    }
+}

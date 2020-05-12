@@ -1,0 +1,9 @@
+{
+    "groupPermissionMap": {
+        "Uploaders": [
+            "create/update",
+            "read",
+            "delete"
+        ]
+    }
+}
