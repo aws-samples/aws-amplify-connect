@@ -1,0 +1,379 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "Lambda resource stack creation using Amplify CLI",
+	"Parameters": {
+		"maxAttempts": {
+			"Type": "Number",
+			"Default": 2
+		},
+		"minutesBetweenCalls": {
+			"Type": "Number",
+			"Default": 60
+		},
+		"minFreeAgents": {
+			"Type": "Number",
+			"Default": 1
+		},
+		"minutesBetweenSuccesses": {
+			"Type": "Number",
+			"Default": 1440
+		},
+		"cFlowID": {
+			"Type": "String",
+			"Default": "NONE"
+		},
+		"instance": {
+			"Type": "String",
+			"Default": "NONE"
+		},
+		"sourcePhoneNumber": {
+			"Type": "String",
+			"Default": "NONE"
+		},
+		"queue": {
+			"Type": "String",
+			"Default": "NONE"
+		},
+		"index": {
+			"Type": "String",
+			"Default": "SuccessfulConnection-index"
+		},
+		"CloudWatchRule": {
+			"Type": "String",
+			"Default": "rate(5 minutes)",
+			"Description": " Schedule Expression"
+		},
+		"env": {
+			"Type": "String"
+		},
+		"storagecontactsStoreName": {
+			"Type": "String",
+			"Default": "storagecontactsStoreName"
+		},
+		"storagecontactsStoreArn": {
+			"Type": "String",
+			"Default": "storagecontactsStoreArn"
+		}
+	},
+	"Conditions": {
+		"ShouldNotCreateEnvResources": {
+			"Fn::Equals": [
+				{
+					"Ref": "env"
+				},
+				"NONE"
+			]
+		}
+	},
+	"Resources": {
+		"LambdaFunction": {
+			"Type": "AWS::Lambda::Function",
+			"Metadata": {
+				"aws:asset:path": "./src",
+				"aws:asset:property": "Code"
+			},
+			"Properties": {
+				"Handler": "index.handler",
+				"FunctionName": {
+					"Fn::If": [
+						"ShouldNotCreateEnvResources",
+						"ConnectDialerJS",
+						{
+							"Fn::Join": [
+								"",
+								[
+									"ConnectDialerJS",
+									"-",
+									{
+										"Ref": "env"
+									}
+								]
+							]
+						}
+					]
+				},
+				"Environment": {
+					"Variables": {
+						"ENV": {
+							"Ref": "env"
+						},
+						"REGION": {
+							"Ref": "AWS::Region"
+						},
+						"maxAttempts": {
+							"Ref": "maxAttempts"
+						},
+						"minutesBetweenCalls": {
+							"Ref": "minutesBetweenCalls"
+						},
+						"queue": {
+							"Ref": "queue"
+						},
+						"minFreeAgents": {
+							"Ref": "minFreeAgents"
+						},
+						"cFlowID": {
+							"Ref": "cFlowID"
+						},
+						"instance": {
+							"Ref": "instance"
+						},
+						"sourcePhoneNumber": {
+							"Ref": "sourcePhoneNumber"
+						},
+						"index": {
+							"Ref": "index"
+						},
+						"minutesBetweenSuccesses": {
+							"Ref": "minutesBetweenSuccesses"
+						},
+						"STORAGE_CONTACTSSTORE_NAME": {
+							"Ref": "storagecontactsStoreName"
+						},
+						"STORAGE_CONTACTSSTORE_ARN": {
+							"Ref": "storagecontactsStoreArn"
+						}
+					}
+				},
+				"Role": {
+					"Fn::GetAtt": [
+						"LambdaExecutionRole",
+						"Arn"
+					]
+				},
+				"Runtime": "nodejs12.x",
+				"Timeout": "25",
+				"Code": {
+					"S3Bucket": "amplify-lonely-connect-testtwo-85200-deployment",
+					"S3Key": "amplify-builds/ConnectDialerJS-6a35326b723976736c2f-build.zip"
+				}
+			}
+		},
+		"LambdaExecutionRole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": {
+					"Fn::If": [
+						"ShouldNotCreateEnvResources",
+						"lonelyconnectLambdaRole05a063f6",
+						{
+							"Fn::Join": [
+								"",
+								[
+									"lonelyconnectLambdaRole05a063f6",
+									"-",
+									{
+										"Ref": "env"
+									}
+								]
+							]
+						}
+					]
+				},
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"lambda.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				}
+			}
+		},
+		"lambdaexecutionpolicy": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "lambda-execution-policy",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"logs:CreateLogGroup",
+								"logs:CreateLogStream",
+								"logs:PutLogEvents"
+							],
+							"Resource": {
+								"Fn::Sub": [
+									"arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
+									{
+										"region": {
+											"Ref": "AWS::Region"
+										},
+										"account": {
+											"Ref": "AWS::AccountId"
+										},
+										"lambda": {
+											"Ref": "LambdaFunction"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		},
+		"ConnectResourcesPolicy": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "connect-resources-policy",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"connect:GetCurrentMetricData",
+								"connect:StartOutboundVoiceContact"
+							],
+							"Resource": "*"
+						}
+					]
+				}
+			}
+		},
+		"AmplifyResourcesPolicy": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "amplify-lambda-execution-policy",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"dynamodb:Get*",
+								"dynamodb:BatchGetItem",
+								"dynamodb:List*",
+								"dynamodb:Describe*",
+								"dynamodb:Scan",
+								"dynamodb:Query",
+								"dynamodb:Update*",
+								"dynamodb:RestoreTable*"
+							],
+							"Resource": [
+								{
+									"Ref": "storagecontactsStoreArn"
+								},
+								{
+									"Fn::Join": [
+										"/",
+										[
+											{
+												"Ref": "storagecontactsStoreArn"
+											},
+											"index/*"
+										]
+									]
+								}
+							]
+						}
+					]
+				}
+			}
+		},
+		"CloudWatchEvent": {
+			"Type": "AWS::Events::Rule",
+			"Properties": {
+				"Description": "Schedule rule for Lambda",
+				"ScheduleExpression": {
+					"Ref": "CloudWatchRule"
+				},
+				"State": "ENABLED",
+				"Targets": [
+					{
+						"Arn": {
+							"Fn::GetAtt": [
+								"LambdaFunction",
+								"Arn"
+							]
+						},
+						"Id": {
+							"Ref": "LambdaFunction"
+						}
+					}
+				]
+			}
+		},
+		"PermissionForEventsToInvokeLambda": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"FunctionName": {
+					"Ref": "LambdaFunction"
+				},
+				"Action": "lambda:InvokeFunction",
+				"Principal": "events.amazonaws.com",
+				"SourceArn": {
+					"Fn::GetAtt": [
+						"CloudWatchEvent",
+						"Arn"
+					]
+				}
+			}
+		}
+	},
+	"Outputs": {
+		"Name": {
+			"Value": {
+				"Ref": "LambdaFunction"
+			}
+		},
+		"Arn": {
+			"Value": {
+				"Fn::GetAtt": [
+					"LambdaFunction",
+					"Arn"
+				]
+			}
+		},
+		"Region": {
+			"Value": {
+				"Ref": "AWS::Region"
+			}
+		},
+		"LambdaExecutionRole": {
+			"Value": {
+				"Ref": "LambdaExecutionRole"
+			}
+		},
+		"CloudWatchEventRule": {
+			"Value": {
+				"Ref": "CloudWatchEvent"
+			}
+		}
+	}
+}

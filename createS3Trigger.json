@@ -1,0 +1,24 @@
+{
+    "LambdaFunctionConfigurations": [
+      {
+        "LambdaFunctionArn": "<lambdafunctionarn>",
+        "Events": [
+          "s3:ObjectCreated:Put"
+        ],
+        "Filter": {
+          "Key": {
+            "FilterRules": [
+              {
+                "Name": "Prefix",
+                "Value": "public/csvupload/"
+              },
+              {
+                "Name": "Suffix",
+                "Value": ".csv"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }

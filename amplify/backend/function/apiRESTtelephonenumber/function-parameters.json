@@ -1,0 +1,12 @@
+{
+    "permissions": {
+        "storage": {
+            "contactsStore": [
+                "create",
+                "read",
+                "update",
+                "delete"
+            ]
+        }
+    }
+}
