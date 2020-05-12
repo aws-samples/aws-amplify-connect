@@ -338,6 +338,11 @@ Eve,Bloggs,+442222222222
 ## Wait for calls
 Setting your agent status to `Available` will allow the Connect Dialer to begin dialing customer/residents in the database. Once a customer has requested a call back and they are moved into the the call back queue and hung up, it takes ~2 minutes before the customer call back is attempted, the customer is not actually called until an agent accepts the call from the queue.
 
+# Trouble Shooting
+## Service Limits
+### Connect 
+By default Amazon Connect has a number of [service limits](https://docs.aws.amazon.com/connect/latest/adminguide/amazon-connect-service-limits.html) in place on new deployments that require a quota increase request to remove e.g. Outbound calls to +447 prefix is limited by default and would prevent successful outbound calls.
+
 # Deleting the Project
 ## Connect
 1. Login to the AWS Console and navigate to the "Amazon Connect" service.
