@@ -41,4 +41,4 @@ You can find instructions on how to deploy this project [here](/DEPLOY.md)
 
 # License
 
-This library is licensed under the MIT-0 License. See the LICENSE file.
+This library is licensed under the MIT-0 License. See the [LICENSE](/LICENSE) file.
