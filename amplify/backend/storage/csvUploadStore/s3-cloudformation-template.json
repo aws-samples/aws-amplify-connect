@@ -203,6 +203,9 @@
             "Type": "AWS::S3::Bucket",
             "DeletionPolicy": "Retain",
             "Properties": {
+                "VersioningConfiguration": {
+                    "Status": "Enabled"
+                },
                 "BucketName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
