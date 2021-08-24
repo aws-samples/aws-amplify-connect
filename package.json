@@ -12,6 +12,7 @@
     "amazon-connect-streams": "1.4.7",
     "aws-amplify": "^4.2.4",
     "aws-amplify-react": "^4.2.32",
+    "is-svg": "^4.3.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-scripts": "^4.0.3",
