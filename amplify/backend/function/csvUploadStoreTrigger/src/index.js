@@ -35,6 +35,11 @@ exports.handler = async function(event, context) {
     var now = new Date();
     var nowseconds = Math.round(now.getTime() / 1000);
     var nowisostring = now.toISOString();
+    
+    // Yesterday Datetime
+    var yesterday = new Date(now.getTime() - (24 * 60 * 60 * 1000));
+    var yesterdayseconds = Math.round(yesterday.getTime() / 1000);
+    var yesterdayisostring = yesterday.toISOString();
 
     // Connect to S3 and read file into JSON object
     const stream = s3.getObject(params).createReadStream();
@@ -54,10 +59,10 @@ exports.handler = async function(event, context) {
             "enabled": "1",
             "choice": "new",
             "contactAttempts": 0,
-            "lastSuccess": nowseconds,
-            "lastAttempt": nowseconds,
-            "lastAttemptDateTime": nowisostring,
-            "lastSuccessDateTime": nowisostring,
+            "lastSuccess": yesterdayseconds,
+            "lastAttempt": yesterdayseconds,
+            "lastAttemptDateTime": yesterdayisostring,
+            "lastSuccessDateTime": yesterdayisostring,
             "successfulConnections": 0,
             "createdDateTime": nowisostring
         },

@@ -133,13 +133,13 @@ class CCPData extends Component {
         console.log(`onConnected(${contact.getContactId()})`);
         var attributeMap = contact.getAttributes();
         var phone = JSON.stringify(attributeMap["IncomingNumber"]["value"]);
-        var phone = phone.replace(/"/g, '');
+        phone = phone.replace(/"/g, '');
         console.log(phone);
         //window.alert("Customer's phone #: " + phone);
         this.setState({phonenumber: phone});
 
         // api call
-        if (this.state.phonenumber != 0){
+        if (this.state.phonenumber !== 0){
           try {
             const items = await API.get('api604c21a1', ('/telephonenumber/' + this.state.phonenumber))
             console.log(items)

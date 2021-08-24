@@ -66,9 +66,7 @@ npm install -g @aws-amplify/cli
 
 ```bash
 amplify --version
-Scanning for plugins...
-Plugin scan successful
-4.18.0
+5.3.0
 ```
 
 ## Download and Configure
@@ -189,7 +187,7 @@ bash createS3Trigger.sh <awsprofile>
 
 1. Login to the AWS Console and navigate to the "Amazon Connect" service.
 2. Select your instance in the "Instance Alias" column
-3. Select "Application integration"
+3. Select "Approved origins"
 4. Select "Add Origin" and add the url of your Portal  
 
 **Note** The Connect agent console will not load in the portal until you complete this step
@@ -304,7 +302,7 @@ https://eu-west-2.console.aws.amazon.com/cognito/users/?region=eu-west-2#/pool/e
 
 In a browser navigate to the generated URL, then select "Users and Groups" and using the "Create user" button create a new user for yourself with a valid email address, but untick and don't enter a phone number. 
 
-While you are waiting for the signup email to arrive, edit your new account and add your newly created user to the "Uploaders" group.
+While you are waiting for the signup email to arrive, `edit your new account and add your newly created user to the "Uploaders" group`.
 
 ## Create Connect Users (Agents)
 
