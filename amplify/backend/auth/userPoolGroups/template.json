@@ -5,10 +5,12 @@
             "Type": "String",
             "Default": "authlonelyconnect0f468434UserPoolId"
         },
+        
         "authlonelyconnect0f468434IdentityPoolId": {
             "Type": "String",
             "Default": "authlonelyconnect0f468434IdentityPoolId"
         },
+        
         "authlonelyconnect0f468434AppClientID": {
             "Type": "String",
             "Default": "authlonelyconnect0f468434AppClientID"
@@ -44,17 +46,20 @@
           "Properties" : {
               "GroupName" : "Uploaders",
               "Precedence" : 1,
+              
               "RoleArn" : {
                 "Fn::GetAtt": [
                     "UploadersGroupRole",
                     "Arn"
                 ]
               },
+              
               "UserPoolId" : {
                 "Ref": "authlonelyconnect0f468434UserPoolId"
-              } 
+              }
             }
         },
+        
         "UploadersGroupRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -88,6 +93,8 @@
                 }
             }
         },
+     
+    
     
         "LambdaExecutionRole": {
             "Type": "AWS::IAM::Role",
@@ -97,13 +104,13 @@
                         "ShouldNotCreateEnvResources",
                         {
                            
-                        }, 
+                        },
                         {
 
                             "Fn::Join": [
                                 "",
                                 [
-                                  
+
                                   "lonelyconnect0f468434",
                                   "-ExecutionRole-",
                                   {
@@ -111,7 +118,7 @@
                                   }
                                 ]
                             ]
-                        }       
+                        }
                     ]
                 },
                 "AssumeRolePolicyDocument": {
@@ -176,7 +183,10 @@
                                     "Action": [
                                         "iam:PassRole"
                                     ],
-                                    "Resource": "*"
+                                    "Resource": [
+                                        { "Ref": "AuthRoleArn" },
+                                        { "Ref": "UnauthRoleArn" }
+                                    ]
                                 }
                             ]
                         }
@@ -226,7 +236,6 @@
                                 "    cognitoidentity.setIdentityPoolRoles(params).promise();",
                                 "    response.send(event, context, response.SUCCESS, {message: 'Successfully updated identity pool.'})",
                                 "    } catch(err) {",
-                                
                                 "        response.send(event, context, response.FAILED, {message: 'Error updating identity pool'});",
                                 "    }",
                                 "   };",
@@ -237,8 +246,8 @@
                     }
                 },
                 "Handler": "index.handler",
-                "Runtime": "nodejs14.x",
-                "Timeout": "300",
+                "Runtime": "nodejs12.x",
+                "Timeout": 300,
                 "Role": {
                     "Fn::GetAtt": [
                         "LambdaExecutionRole",
@@ -283,7 +292,9 @@
             },
             "DependsOn": ["RoleMapFunction"]
         }
+   
     },
+    
     "Outputs": {
       
         "UploadersGroupRole": {
@@ -298,4 +309,5 @@
         
       
     }
+    
 }

@@ -149,7 +149,7 @@ class AllCustomersDataTable extends Component {
     var updatedItems = this.state.items;
 
     //Find index of specific object using findIndex method.    
-    var objIndex = updatedItems.findIndex((item => item.telephoneNumber == clickitem.telephoneNumber));
+    var objIndex = updatedItems.findIndex((item => item.telephoneNumber === clickitem.telephoneNumber));
 
     //Log object to Console.
     console.log(console.log(`Before Update: ${clickitem.telephoneNumber}"`));
@@ -178,10 +178,10 @@ class AllCustomersDataTable extends Component {
   }
 
   onDeleteClickHandler = async(clickitem, i, event) => {
-    var updatedItems = this.state.items;
+    //var updatedItems = this.state.items;
 
     //Find index of specific object using findIndex method.    
-    var objIndex = updatedItems.findIndex((item => item.telephoneNumber == clickitem.telephoneNumber));
+    //var objIndex = updatedItems.findIndex((item => item.telephoneNumber === clickitem.telephoneNumber));
 
     //Log object to Console.
     console.log(`Delete: ${clickitem.telephoneNumber}"`);
