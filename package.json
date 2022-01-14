@@ -3,17 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/ui-react": "^1.2.22",
+    "@aws-amplify/ui-react": "^1.2.26",
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.5.0",
     "@testing-library/user-event": "7.2.1",
     "amazon-connect-streams": "1.4.7",
-    "aws-amplify": "^4.3.4",
-    "is-svg": "^4.3.1",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-scripts": "^4.0.3",
-    "semantic-ui-react": "0.88.2"
+    "aws-amplify": "^4.3.12",
+    "is-svg": "^4.3.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^5.0.0",
+    "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
     "start": "react-scripts start",
