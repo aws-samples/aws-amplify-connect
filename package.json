@@ -8,7 +8,7 @@
     "@testing-library/react": "9.5.0",
     "@testing-library/user-event": "7.2.1",
     "amazon-connect-streams": "1.4.7",
-    "aws-amplify": "^5.3.3",
+    "aws-amplify": "^5.3.12",
     "is-svg": "^4.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
